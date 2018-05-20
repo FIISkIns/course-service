@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"path"
+	"strconv"
 	"strings"
 )
 
@@ -23,7 +24,7 @@ type CourseInfo struct {
 
 type TaskGroup struct {
 	Title string          `json:"title"`
-	Tasks []*BaseTaskInfo `json:"taskInfo"`
+	Tasks []*BaseTaskInfo `json:"tasks"`
 }
 
 type BaseTaskInfo struct {
@@ -36,15 +37,13 @@ type TaskInfo struct {
 	Body         string `json:"body"`
 }
 
-var coursePath = "example-course"
 var courseInfo CourseInfo
-
 var cachedTasks = make(map[string]*TaskInfo)
 
 func loadCourseYaml(filePath string, v interface{}) error {
 	log.Println("Loading course file", filePath)
 
-	data, err := ioutil.ReadFile(path.Join(coursePath, filePath))
+	data, err := ioutil.ReadFile(path.Join(config.Path, filePath))
 	if err != nil {
 		return err
 	}
@@ -157,13 +156,14 @@ func HandleGetTaskInfo(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 }
 
 func main() {
+	initConfig()
 	loadCourseInfo()
 
 	router := httprouter.New()
 	router.GET("/", HandleGetCourseInfo)
 	router.GET("/tasks", HandleGetTasks)
 	router.GET("/tasks/:id", HandleGetTaskInfo)
-	router.ServeFiles("/static/*filepath", http.Dir(path.Join(coursePath, "resources")))
+	router.ServeFiles("/static/*filepath", http.Dir(path.Join(config.Path, "resources")))
 
-	log.Fatal(http.ListenAndServe(":7610", router))
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Port), router))
 }
