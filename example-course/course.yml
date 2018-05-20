@@ -1,0 +1,12 @@
+title: Example Course
+description: An interesting course
+task-groups:
+- title: Beginner
+  tasks:
+  - easy.intro
+  - easy.learn
+- title: Expert
+  tasks:
+  - hard.intro
+  - hard.example
+  - hard.end
