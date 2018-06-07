@@ -10,3 +10,15 @@ task-groups:
   - hard.intro
   - hard.example
   - hard.end
+achievements:
+- title: Course started
+  description: Start any task 
+  icon: origami1.png
+  type: starter
+- title: Course Completed
+  description: Complete all course tasks 
+  icon: origami2.png
+- title: Course Completed
+  description: Complete all course tasks 
+  icon: origami3.png
+  type: completion

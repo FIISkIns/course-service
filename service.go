@@ -17,6 +17,13 @@ type BaseCourseInfo struct {
 	Description string `json:"description"`
 }
 
+type AchievementInfo struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Icon        string `json:"icon"`
+	Type        string `json:"type"`
+}
+
 type CourseInfo struct {
 	BaseCourseInfo
 	TaskGroups []TaskGroup `json:"taskGroups"`
@@ -34,10 +41,11 @@ type BaseTaskInfo struct {
 
 type TaskInfo struct {
 	BaseTaskInfo `yaml:",inline"`
-	Body         string `json:"body"`
+	Body string  `json:"body"`
 }
 
 var courseInfo CourseInfo
+var achievementsInfo = make([]AchievementInfo, 0)
 var cachedTasks = make(map[string]*TaskInfo)
 
 func loadCourseYaml(filePath string, v interface{}) error {
@@ -79,9 +87,14 @@ func loadCourseInfo() {
 		Tasks []string
 	}
 
+	type AchievementsInfoRaw struct {
+		AchievementInfo `yaml:",inline"`
+	}
+
 	type CourseInfoRaw struct {
-		BaseCourseInfo `yaml:",inline"`
-		TaskGroups     []TaskGroupRaw `yaml:"task-groups"`
+		BaseCourseInfo                     `yaml:",inline"`
+		TaskGroups   []TaskGroupRaw        `yaml:"task-groups"`
+		Achievements []AchievementsInfoRaw `yaml:"achievements"`
 	}
 
 	var info CourseInfoRaw
@@ -93,6 +106,15 @@ func loadCourseInfo() {
 	courseInfo = CourseInfo{
 		BaseCourseInfo: info.BaseCourseInfo,
 		TaskGroups:     make([]TaskGroup, len(info.TaskGroups)),
+	}
+
+	var achievementInfo AchievementInfo
+	for _, achievement := range info.Achievements {
+		achievementInfo.Title = achievement.Title
+		achievementInfo.Description = achievement.Description
+		achievementInfo.Icon = achievement.Icon
+		achievementInfo.Type = achievement.Type
+		achievementsInfo = append(achievementsInfo, achievementInfo)
 	}
 
 	for i, group := range info.TaskGroups {
@@ -155,14 +177,26 @@ func HandleGetTaskInfo(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	w.Write(data)
 }
 
+func HandleGetAchievementsInfo(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+	data, err := json.Marshal(&achievementsInfo)
+	if err != nil {
+		http.Error(w, "Could not serialize course info", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+}
+
 func main() {
 	initConfig()
 	loadCourseInfo()
-
+	
 	router := httprouter.New()
 	router.GET("/", HandleGetCourseInfo)
 	router.GET("/tasks", HandleGetTasks)
 	router.GET("/tasks/:id", HandleGetTaskInfo)
+	router.GET("/achievements", HandleGetAchievementsInfo)
 	router.ServeFiles("/static/*filepath", http.Dir(path.Join(config.Path, "resources")))
 
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Port), router))
