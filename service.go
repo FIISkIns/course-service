@@ -41,11 +41,11 @@ type BaseTaskInfo struct {
 
 type TaskInfo struct {
 	BaseTaskInfo `yaml:",inline"`
-	Body string  `json:"body"`
+	Body         string `json:"body"`
 }
 
 var courseInfo CourseInfo
-var achievementsInfo []AchievementInfo
+var achievements []AchievementInfo
 var cachedTasks = make(map[string]*TaskInfo)
 
 func loadCourseYaml(filePath string, v interface{}) error {
@@ -88,9 +88,9 @@ func loadCourseInfo() {
 	}
 
 	type CourseInfoRaw struct {
-		BaseCourseInfo                 `yaml:",inline"`
-		TaskGroups   []TaskGroupRaw    `yaml:"task-groups"`
-		Achievements []AchievementInfo `yaml:"achievements"`
+		BaseCourseInfo `yaml:",inline"`
+		TaskGroups     []TaskGroupRaw    `yaml:"task-groups"`
+		Achievements   []AchievementInfo `yaml:"achievements"`
 	}
 
 	var info CourseInfoRaw
@@ -104,7 +104,7 @@ func loadCourseInfo() {
 		TaskGroups:     make([]TaskGroup, len(info.TaskGroups)),
 	}
 
-	achievementsInfo = info.Achievements
+	achievements = info.Achievements
 
 	for i, group := range info.TaskGroups {
 		courseInfo.TaskGroups[i] = TaskGroup{
@@ -167,7 +167,7 @@ func HandleGetTaskInfo(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 }
 
 func HandleGetAchievementsInfo(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
-	data, err := json.Marshal(&achievementsInfo)
+	data, err := json.Marshal(&achievements)
 	if err != nil {
 		http.Error(w, "Could not serialize course info", http.StatusInternalServerError)
 		return
