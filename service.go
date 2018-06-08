@@ -17,6 +17,13 @@ type BaseCourseInfo struct {
 	Description string `json:"description"`
 }
 
+type AchievementInfo struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Icon        string `json:"icon"`
+	Type        string `json:"type"`
+}
+
 type CourseInfo struct {
 	BaseCourseInfo
 	TaskGroups []TaskGroup `json:"taskGroups"`
@@ -38,6 +45,7 @@ type TaskInfo struct {
 }
 
 var courseInfo CourseInfo
+var achievements []AchievementInfo
 var cachedTasks = make(map[string]*TaskInfo)
 
 func loadCourseYaml(filePath string, v interface{}) error {
@@ -81,7 +89,8 @@ func loadCourseInfo() {
 
 	type CourseInfoRaw struct {
 		BaseCourseInfo `yaml:",inline"`
-		TaskGroups     []TaskGroupRaw `yaml:"task-groups"`
+		TaskGroups     []TaskGroupRaw    `yaml:"task-groups"`
+		Achievements   []AchievementInfo `yaml:"achievements"`
 	}
 
 	var info CourseInfoRaw
@@ -94,6 +103,8 @@ func loadCourseInfo() {
 		BaseCourseInfo: info.BaseCourseInfo,
 		TaskGroups:     make([]TaskGroup, len(info.TaskGroups)),
 	}
+
+	achievements = info.Achievements
 
 	for i, group := range info.TaskGroups {
 		courseInfo.TaskGroups[i] = TaskGroup{
@@ -155,6 +166,17 @@ func HandleGetTaskInfo(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	w.Write(data)
 }
 
+func HandleGetAchievementsInfo(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+	data, err := json.Marshal(&achievements)
+	if err != nil {
+		http.Error(w, "Could not serialize course info", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+}
+
 func main() {
 	initConfig()
 	loadCourseInfo()
@@ -163,6 +185,7 @@ func main() {
 	router.GET("/", HandleGetCourseInfo)
 	router.GET("/tasks", HandleGetTasks)
 	router.GET("/tasks/:id", HandleGetTaskInfo)
+	router.GET("/achievements", HandleGetAchievementsInfo)
 	router.ServeFiles("/static/*filepath", http.Dir(path.Join(config.Path, "resources")))
 
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Port), router))
