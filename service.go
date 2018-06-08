@@ -88,8 +88,8 @@ func loadCourseInfo() {
 	}
 
 	type CourseInfoRaw struct {
-		BaseCourseInfo                     `yaml:",inline"`
-		TaskGroups   []TaskGroupRaw        `yaml:"task-groups"`
+		BaseCourseInfo                 `yaml:",inline"`
+		TaskGroups   []TaskGroupRaw    `yaml:"task-groups"`
 		Achievements []AchievementInfo `yaml:"achievements"`
 	}
 
