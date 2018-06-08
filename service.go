@@ -191,7 +191,7 @@ func HandleGetAchievementsInfo(w http.ResponseWriter, _ *http.Request, _ httprou
 func main() {
 	initConfig()
 	loadCourseInfo()
-	
+
 	router := httprouter.New()
 	router.GET("/", HandleGetCourseInfo)
 	router.GET("/tasks", HandleGetTasks)

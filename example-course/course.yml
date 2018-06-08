@@ -18,7 +18,4 @@ achievements:
 - title: Course Completed
   description: Complete all course tasks 
   icon: origami2.png
-- title: Course Completed
-  description: Complete all course tasks 
-  icon: origami3.png
   type: completion
