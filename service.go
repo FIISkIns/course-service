@@ -45,7 +45,7 @@ type TaskInfo struct {
 }
 
 var courseInfo CourseInfo
-var achievementsInfo = make([]AchievementInfo, 0)
+var achievementsInfo []AchievementInfo
 var cachedTasks = make(map[string]*TaskInfo)
 
 func loadCourseYaml(filePath string, v interface{}) error {
@@ -87,14 +87,10 @@ func loadCourseInfo() {
 		Tasks []string
 	}
 
-	type AchievementsInfoRaw struct {
-		AchievementInfo `yaml:",inline"`
-	}
-
 	type CourseInfoRaw struct {
 		BaseCourseInfo                     `yaml:",inline"`
 		TaskGroups   []TaskGroupRaw        `yaml:"task-groups"`
-		Achievements []AchievementsInfoRaw `yaml:"achievements"`
+		Achievements []AchievementInfo `yaml:"achievements"`
 	}
 
 	var info CourseInfoRaw
@@ -108,14 +104,7 @@ func loadCourseInfo() {
 		TaskGroups:     make([]TaskGroup, len(info.TaskGroups)),
 	}
 
-	var achievementInfo AchievementInfo
-	for _, achievement := range info.Achievements {
-		achievementInfo.Title = achievement.Title
-		achievementInfo.Description = achievement.Description
-		achievementInfo.Icon = achievement.Icon
-		achievementInfo.Type = achievement.Type
-		achievementsInfo = append(achievementsInfo, achievementInfo)
-	}
+	achievementsInfo = info.Achievements
 
 	for i, group := range info.TaskGroups {
 		courseInfo.TaskGroups[i] = TaskGroup{
