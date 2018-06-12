@@ -15,6 +15,7 @@ import (
 type BaseCourseInfo struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	Picture     string `json:"picture"`
 }
 
 type AchievementInfo struct {
