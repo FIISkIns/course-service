@@ -15,5 +15,7 @@ FROM scratch
 COPY --from=builder /app ./
 ENTRYPOINT ["./app"]
 
-COPY example-course ./example-course
+COPY courses ./courses
+
 ENV COURSE_PORT 80
+EXPOSE 80
