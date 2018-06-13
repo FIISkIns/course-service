@@ -1,0 +1,21 @@
+title: Origami Course
+description: Origami involves the creation of two-dimensional and three-dimensional paper objects, usually enirely by folding. This course will take you through the basics of origami and will also provide you with tutorials for creating models such as animals, birds, geometric shapes and decorative objects. 
+picture: origami.jpg
+task-groups:
+- title: Beginner
+  tasks:
+  - easy.angelfish
+  - easy.cross
+  - easy.mouse
+- title: Expert
+  tasks:
+  - hard.owl
+achievements:
+- title: Paper newbie
+  description: Start any task 
+  icon: origami1.png
+  type: starter
+- title: Paper wizard
+  description: Complete all course tasks 
+  icon: origami2.png
+  type: completion
