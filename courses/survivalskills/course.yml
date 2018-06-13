@@ -1,0 +1,22 @@
+title: Survival Skills
+description: Strengthen your character and learn how to react in any situation! Survival skills training will help you overcome the fear of confronting the unknown and make the best decisions in the most unexpected events. Here you will discover elementary notions of survival in the wild.
+picture: survival.jpg
+task-groups:
+- title: Beginner
+  tasks:
+  - easy.fire
+  - easy.water
+  - easy.food
+- title: Expert
+  tasks:
+  - hard.shelter
+  - hard.gig
+achievements:
+- title: Explorer
+  description: Join the Survival skills course
+  icon: bonfire.png
+  type: starter
+- title: King of the jungle
+  description: Complete all taks of Survival skills course
+  icon: lion.png
+  type: completion
