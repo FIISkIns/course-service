@@ -1,0 +1,62 @@
+title: The 21 card trick!
+body: >
+  This trick is a bit different from the usual card tricks in terms of principles applied in it and execution but it is just as 
+  fun and enjoyable as the the other tricks, perfect for astonishing your friends!
+
+  Also it is a very simple trick because it demands no preparations whatsoever!
+
+
+  ### Description
+
+  1.  The performer picks any 21 cards from a standard 52-card deck.
+
+  2.  The performer places the cards in three piles each of seven cards, adding a card (face up) to one pile, and then to the next pile and so on.
+
+  3.  The magician asks a spectator to choose a single card from any of the cards that are on the table and asks him/her to tell 
+  which pile is it in (and obviously to remember the card). Now the performer picks up the cards and rebuilds the 21 card stack.
+
+  4.  The magician repeats steps 2-3 two more times, with the remark that the last time he/she no longer rebuilds the full 21 card 
+  pile.
+
+  5. The performer asks for the last time what is the pile containing the memorized card, and now he/she is able to tell which is 
+  the card chosen by the spectator!
+
+
+  ### Explanation
+
+
+  Explaining this trick is more difficult than performing it, because it involves some mathematical equations and recursions 
+  that lead to the inevitable truth of finding the correct card. The "correct" card that we need to find will always be the 
+  fourth one (the actual middle card) of the last indicated pile. How so? Well, to prove it without getting in all that 
+  mathematical stuff, we have prepared another way, easier to follow and understand, using a visual representation.
+
+
+  First let`s simply follow the first two steps.
+
+  ![cards](/21trick_0.png#center)
+
+
+  Now let`s assume that the card that will be chosen is going to be the seven of hearth, but it can really be any of them.
+
+  ![cards](/21trick_1.png#center)
+
+
+  Next the spectator will indicate the pile containing the chosen card, and this is the most important port of this trick, 
+  because we need to make sure that when we rebuild the 21 card stack, the indicated pile falls between the two other ones.
+
+  Now for the sake of following what happens, we are going to place the cards of the two piles (that do not contain 
+  our chosen card) face down, because we know for sure that the card is not there.
+
+  ![cards](/21trick_2.png#center)
+
+
+  And what`s left is to simply repeat this process two more times and see what happens.
+
+  ![cards](/21trick_3.png#center)
+
+
+  ![cards](/21trick_4.png#center)
+
+
+  The output is always the same because the middle pile will always be redistributed to the middle rows of each pile, needing 
+  a total of three iterations for the card to get in its place, just amazing!
