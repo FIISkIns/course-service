@@ -178,6 +178,10 @@ func HandleGetAchievementsInfo(w http.ResponseWriter, _ *http.Request, _ httprou
 	w.Write(data)
 }
 
+func HandleHealthCheck(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func main() {
 	initConfig()
 	loadCourseInfo()
@@ -188,6 +192,7 @@ func main() {
 	router.GET("/tasks/:id", HandleGetTaskInfo)
 	router.GET("/achievements", HandleGetAchievementsInfo)
 	router.ServeFiles("/static/*filepath", http.Dir(path.Join(config.Path, "resources")))
+	router.GET("/health", HandleHealthCheck)
 
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Port), router))
 }
